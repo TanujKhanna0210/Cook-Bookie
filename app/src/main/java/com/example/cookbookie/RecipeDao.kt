@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 interface RecipeDao {
 
     @Upsert
-    suspend fun insertRecipe(recipe: Recipe)
+    suspend fun upsertRecipe(recipe: Recipe)
 
     @Delete
     suspend fun deleteRecipe(recipe: Recipe)

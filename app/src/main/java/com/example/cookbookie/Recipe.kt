@@ -1,6 +1,5 @@
 package com.example.cookbookie
 
-import android.graphics.Bitmap
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -10,7 +9,7 @@ data class Recipe(
     val category: String,
     val ingredients: String,
     val instructions: String,
-    val image: Bitmap? = null,
+//    val image: Bitmap? = null,
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0
 )
