@@ -1,4 +1,4 @@
-package com.example.cookbookie
+package com.example.cookbookie.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

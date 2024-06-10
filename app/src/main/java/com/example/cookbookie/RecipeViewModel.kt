@@ -1,118 +1,73 @@
 package com.example.cookbookie
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
+import com.example.cookbookie.domain.model.Recipe
+import com.example.cookbookie.domain.repository.RecipeRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RecipeViewModel(
-    private val dao: RecipeDao
+@HiltViewModel
+class RecipeViewModel @Inject constructor(
+    private val repository: RecipeRepository
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(RecipeState())
-    val state = _state.stateIn(viewModelScope, SharingStarted.WhileSubscribed(), RecipeState())
+    var recipe by mutableStateOf(
+        Recipe("", "", "", "", -1)
+    )
+        private set
 
-    fun onEvent(event: RecipeEvent) {
-        when (event) {
-            is RecipeEvent.DeleteRecipe -> {
-                viewModelScope.launch {
-                    dao.deleteRecipe(event.recipe)
-                }
-            }
+    fun getAllRecipes() = repository.getAllRecipes()
 
-            RecipeEvent.HideDialog -> {
-                _state.update {
-                    it.copy(
-                        isAddingRecipe = false
-                    )
-                }
-            }
-
-            RecipeEvent.SaveRecipe -> {
-                val title = state.value.title
-                val category = state.value.category
-                val ingredients = state.value.ingredients
-                val instructions = state.value.instructions
-//                val image = state.value.image
-
-                if (title.isBlank() || category.isBlank() || ingredients.isBlank() || instructions.isBlank()) {
-                    return
-                }
-
-                val recipe = Recipe(
-                    title = title,
-                    category = category,
-                    ingredients = ingredients,
-                    instructions = instructions,
-//                    image = image
-                )
-
-                viewModelScope.launch {
-                    dao.upsertRecipe(recipe)
-                }
-                _state.update {
-                    it.copy(
-                        isAddingRecipe = false,
-                        title = "",
-                        category = "",
-                        ingredients = "",
-                        instructions = "",
-//                        image = ,
-                        )
-                }
-
-            }
-
-            is RecipeEvent.SetCategory -> {
-                _state.update {
-                    it.copy(
-                        category = event.category
-                    )
-                }
-            }
-
-//            is RecipeEvent.SetImage -> {
-//                _state.update {
-//                    it.copy(
-//                        image = event.image
-//                    )
-//                }
-//            }
-
-            is RecipeEvent.SetIngredients -> {
-                _state.update {
-                    it.copy(
-                        ingredients = event.ingredients
-                    )
-                }
-            }
-
-            is RecipeEvent.SetInstructions -> {
-                _state.update {
-                    it.copy(
-                        instructions = event.instructions
-                    )
-                }
-            }
-
-            is RecipeEvent.SetTitle -> {
-                _state.update {
-                    it.copy(
-                        title = event.title
-                    )
-                }
-            }
-
-            RecipeEvent.ShowDialog -> {
-                _state.update {
-                    it.copy(
-                        isAddingRecipe = true
-                    )
-                }
-            }
-        }
+    fun getRecipe(recipeId: Int) = viewModelScope.launch {
+        recipe = repository.getRecipe(recipeId)
     }
+
+    fun upsertRecipe(recipe: Recipe) = viewModelScope.launch {
+        repository.upsertRecipe(recipe)
+    }
+
+    fun deleteRecipe(recipe: Recipe) = viewModelScope.launch {
+        repository.deleteRecipe(recipe)
+    }
+
+
+    fun updateTitle(title: String) {
+        recipe = recipe.copy(
+            title = title
+        )
+    }
+
+    fun updateCategory(category: String) {
+        recipe = recipe.copy(
+            category = category
+        )
+    }
+
+    fun updateIngredients(ingredients: String) {
+        recipe = recipe.copy(
+            ingredients = ingredients
+        )
+    }
+
+    fun updateInstructions(instructions: String) {
+        recipe = recipe.copy(
+            instructions = instructions
+        )
+    }
+
+//    fun updateImage(image: Bitmap) {
+//        recipe = recipe.copy(
+//            image = image
+//        )
+//    }
+
+//    fun getBitmapFromDrawable(context: Context, drawableId: Int): Bitmap {
+//        val drawable = ContextCompat.getDrawable(context, drawableId)
+//        return (drawable as BitmapDrawable).bitmap
+//    }
 }

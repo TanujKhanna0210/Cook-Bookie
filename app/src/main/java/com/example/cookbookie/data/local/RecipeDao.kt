@@ -1,9 +1,10 @@
-package com.example.cookbookie
+package com.example.cookbookie.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
+import com.example.cookbookie.domain.model.Recipe
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -17,6 +18,9 @@ interface RecipeDao {
 
     @Query("SELECT * FROM recipe")
     fun getAllRecipes(): Flow<List<Recipe>>
+
+    @Query("SELECT * FROM recipe WHERE id=:recipeId")
+    suspend fun getRecipe(recipeId: Int): Recipe
 
     // TODO : Other queries based on categories
 }

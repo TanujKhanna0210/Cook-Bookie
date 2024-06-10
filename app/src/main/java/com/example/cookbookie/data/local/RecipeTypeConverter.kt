@@ -1,4 +1,4 @@
-package com.example.cookbookie
+package com.example.cookbookie.data.local
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
