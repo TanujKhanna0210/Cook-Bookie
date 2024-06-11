@@ -39,7 +39,7 @@ fun NavGraph() {
         ) { backStackEntry ->
             val recipeId = backStackEntry.arguments?.getInt("recipeId") ?: -1
             RecipeDetailScreen(
-                itemId = recipeId,
+                recipeId = recipeId,
                 onBackClick = {
                     navController.popBackStack()
                 }
