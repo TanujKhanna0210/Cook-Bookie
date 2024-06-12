@@ -1,10 +1,12 @@
 package com.example.cookbookie
 
+import android.graphics.Bitmap
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cookbookie.data.local.RecipeTypeConverter
 import com.example.cookbookie.domain.model.Recipe
 import com.example.cookbookie.domain.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +19,7 @@ class RecipeViewModel @Inject constructor(
 ) : ViewModel() {
 
     var recipe by mutableStateOf(
-        Recipe("", "", "", "", -1)
+        Recipe(title = "", category = "", ingredients = "", instructions = "", id = -1)
     )
         private set
 
@@ -58,6 +60,14 @@ class RecipeViewModel @Inject constructor(
         recipe = recipe.copy(
             instructions = instructions
         )
+    }
+
+    fun fromBitmap(bitmap: Bitmap): ByteArray {
+        return RecipeTypeConverter().fromBitmap(bitmap)
+    }
+
+    fun toBitmap(byteArray: ByteArray): Bitmap {
+        return RecipeTypeConverter().toBitmap(byteArray)
     }
 
 //    fun updateImage(image: Bitmap) {

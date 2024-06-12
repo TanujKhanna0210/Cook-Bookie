@@ -9,6 +9,7 @@ data class Recipe(
     val category: String,
     val ingredients: String,
     val instructions: String,
+    val image: ByteArray? = null,
 //    val image: Bitmap? = null,
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0
