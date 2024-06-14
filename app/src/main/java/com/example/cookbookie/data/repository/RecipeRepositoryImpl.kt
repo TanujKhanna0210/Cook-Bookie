@@ -33,4 +33,12 @@ class RecipeRepositoryImpl(
 
     }
 
+    override fun getFavoriteRecipes(): Flow<List<Recipe>> {
+        return recipeDao.getFavoriteRecipes()
+    }
+
+    override suspend fun updateFavoriteStatus(id: Int, isFavorite: Boolean) {
+        recipeDao.updateFavoriteStatus(id, isFavorite)
+    }
+
 }

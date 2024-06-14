@@ -27,4 +27,10 @@ interface RecipeDao {
 
     @Query("SELECT * FROM Recipe WHERE title LIKE :query || '%' OR category LIKE :query || '%'")
     fun searchRecipes(query: String): Flow<List<Recipe>>
+
+    @Query("SELECT * FROM Recipe WHERE favorite = 1")
+    fun getFavoriteRecipes(): Flow<List<Recipe>>
+
+    @Query("UPDATE Recipe SET favorite=:isFavorite WHERE id=:id")
+    suspend fun updateFavoriteStatus(id: Int, isFavorite: Boolean)
 }

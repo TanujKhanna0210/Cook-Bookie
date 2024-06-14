@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -42,7 +44,9 @@ import com.example.cookbookie.domain.model.Recipe
 fun RecipeCard(
     recipe: Recipe,
     navigateToDetailsScreen: (recipeId: Int) -> Unit,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
+    onFavoriteClick: () -> Unit,
+    showDeleteIcon: Boolean = true
 ) {
     Box {
         Card(
@@ -136,16 +140,32 @@ fun RecipeCard(
                 }
             }
         }
+
+        if (showDeleteIcon) {
+            Icon(
+                imageVector = Icons.Default.Delete,
+                contentDescription = null,
+                tint = Color.Red,
+                modifier = Modifier
+                    .padding(end = 28.dp, bottom = 28.dp)
+                    .size(20.dp)
+                    .align(Alignment.BottomEnd)
+                    .clickable {
+                        onDelete()
+                    }
+            )
+        }
+
         Icon(
-            imageVector = Icons.Default.Delete,
+            imageVector = if (recipe.favorite) Icons.Filled.Favorite else Icons.Outlined.Favorite,
             contentDescription = null,
-            tint = Color.Red,
+            tint = if (recipe.favorite) Color.Red else Color.Gray,
             modifier = Modifier
-                .padding(end = 28.dp, bottom = 28.dp)
+                .padding(end = 28.dp, top = 28.dp)
                 .size(20.dp)
-                .align(Alignment.BottomEnd)
+                .align(Alignment.TopEnd)
                 .clickable {
-                    onDelete()
+                    onFavoriteClick()
                 }
         )
     }

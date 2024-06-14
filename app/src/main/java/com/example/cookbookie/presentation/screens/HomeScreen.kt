@@ -123,7 +123,9 @@ fun HomeScreen(
                         RecipeCard(
                             recipe = recipe,
                             navigateToDetailsScreen = { navigateToDetailsScreen(recipe.id) },
-                            onDelete = { viewModel.deleteRecipe(recipe) }
+                            onDelete = { viewModel.deleteRecipe(recipe) },
+                            onFavoriteClick = { viewModel.toggleFavoriteStatus(recipe) },
+                            showDeleteIcon = true
                         )
                     }
                 }

@@ -25,7 +25,6 @@ import androidx.navigation.navArgument
 import com.example.cookbookie.presentation.screens.BookmarkScreen
 import com.example.cookbookie.presentation.screens.HomeScreen
 import com.example.cookbookie.presentation.screens.RecipeDetailScreen
-import com.example.cookbookie.presentation.screens.SearchScreen
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -126,11 +125,13 @@ fun NavGraph() {
             }
 
             composable(route = Route.BookmarkScreen.route) {
-                BookmarkScreen()
-            }
-
-            composable(route = Route.SearchScreen.route) {
-                SearchScreen()
+                BookmarkScreen(
+                    navigateToDetailsScreen = {recipeId ->
+                        navController.navigate(
+                            route = "${Route.DetailsScreen.route}/$recipeId"
+                        )
+                    }
+                )
             }
         }
 

@@ -17,4 +17,8 @@ interface RecipeRepository {
 
     fun searchRecipes(query: String): Flow<List<Recipe>>
 
+    fun getFavoriteRecipes(): Flow<List<Recipe>>
+
+    suspend fun updateFavoriteStatus(id: Int, isFavorite: Boolean)
+
 }

@@ -10,6 +10,7 @@ import com.example.cookbookie.data.local.RecipeTypeConverter
 import com.example.cookbookie.domain.model.Recipe
 import com.example.cookbookie.domain.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -50,6 +51,8 @@ class RecipeViewModel @Inject constructor(
     private val _searchResults = MutableStateFlow<List<Recipe>>(emptyList())
     val searchResults: StateFlow<List<Recipe>> = _searchResults
 
+    val favoriteRecipes: Flow<List<Recipe>> = repository.getFavoriteRecipes()
+
     init {
         loadAllRecipes()
     }
@@ -65,6 +68,12 @@ class RecipeViewModel @Inject constructor(
                 _snacks.value = recipes.filter { it.category == "Snacks" }
                 _beverages.value = recipes.filter { it.category == "Beverage" }
             }
+        }
+    }
+
+    fun toggleFavoriteStatus(recipe: Recipe) {
+        viewModelScope.launch {
+            repository.updateFavoriteStatus(recipe.id, !recipe.favorite)
         }
     }
 
