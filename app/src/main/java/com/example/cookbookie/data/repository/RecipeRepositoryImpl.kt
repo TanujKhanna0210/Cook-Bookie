@@ -28,4 +28,9 @@ class RecipeRepositoryImpl(
         recipeDao.deleteRecipe(recipe)
     }
 
+    override fun searchRecipes(query: String): Flow<List<Recipe>> {
+        return recipeDao.searchRecipes(query)
+
+    }
+
 }

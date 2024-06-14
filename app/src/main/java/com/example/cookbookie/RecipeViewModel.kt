@@ -47,6 +47,9 @@ class RecipeViewModel @Inject constructor(
     private val _beverages = MutableStateFlow<List<Recipe>>(emptyList())
     val beverages: StateFlow<List<Recipe>> = _beverages.asStateFlow()
 
+    private val _searchResults = MutableStateFlow<List<Recipe>>(emptyList())
+    val searchResults: StateFlow<List<Recipe>> = _searchResults
+
     init {
         loadAllRecipes()
     }
@@ -61,6 +64,14 @@ class RecipeViewModel @Inject constructor(
                 _desserts.value = recipes.filter { it.category == "Dessert" }
                 _snacks.value = recipes.filter { it.category == "Snacks" }
                 _beverages.value = recipes.filter { it.category == "Beverage" }
+            }
+        }
+    }
+
+    fun searchRecipes(query: String) {
+        viewModelScope.launch {
+            repository.searchRecipes(query).collect {
+                _searchResults.value = it
             }
         }
     }
