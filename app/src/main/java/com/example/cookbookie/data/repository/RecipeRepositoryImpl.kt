@@ -12,6 +12,10 @@ class RecipeRepositoryImpl(
         return recipeDao.getAllRecipes()
     }
 
+    override fun getRecipesByCategory(category: String): Flow<List<Recipe>> {
+        return recipeDao.getRecipesByCategory(category)
+    }
+
     override suspend fun getRecipe(recipeId: Int): Recipe {
         return recipeDao.getRecipe(recipeId)
     }

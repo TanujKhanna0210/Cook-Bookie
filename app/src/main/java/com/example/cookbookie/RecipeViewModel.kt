@@ -10,6 +10,9 @@ import com.example.cookbookie.data.local.RecipeTypeConverter
 import com.example.cookbookie.domain.model.Recipe
 import com.example.cookbookie.domain.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,7 +26,44 @@ class RecipeViewModel @Inject constructor(
     )
         private set
 
-    fun getAllRecipes() = repository.getAllRecipes()
+    private val _allRecipes = MutableStateFlow<List<Recipe>>(emptyList())
+    val allRecipes: StateFlow<List<Recipe>> = _allRecipes.asStateFlow()
+
+    private val _appetizers = MutableStateFlow<List<Recipe>>(emptyList())
+    val appetizers: StateFlow<List<Recipe>> = _appetizers.asStateFlow()
+
+    private val _mainCourse = MutableStateFlow<List<Recipe>>(emptyList())
+    val mainCourse: StateFlow<List<Recipe>> = _mainCourse.asStateFlow()
+
+    private val _sideDishes = MutableStateFlow<List<Recipe>>(emptyList())
+    val sideDishes: StateFlow<List<Recipe>> = _sideDishes.asStateFlow()
+
+    private val _desserts = MutableStateFlow<List<Recipe>>(emptyList())
+    val desserts: StateFlow<List<Recipe>> = _desserts.asStateFlow()
+
+    private val _snacks = MutableStateFlow<List<Recipe>>(emptyList())
+    val snacks: StateFlow<List<Recipe>> = _snacks.asStateFlow()
+
+    private val _beverages = MutableStateFlow<List<Recipe>>(emptyList())
+    val beverages: StateFlow<List<Recipe>> = _beverages.asStateFlow()
+
+    init {
+        loadAllRecipes()
+    }
+
+    private fun loadAllRecipes() {
+        viewModelScope.launch {
+            repository.getAllRecipes().collect { recipes ->
+                _allRecipes.value = recipes
+                _appetizers.value = recipes.filter { it.category == "Appetizer" }
+                _mainCourse.value = recipes.filter { it.category == "Main Course" }
+                _sideDishes.value = recipes.filter { it.category == "Side Dish" }
+                _desserts.value = recipes.filter { it.category == "Dessert" }
+                _snacks.value = recipes.filter { it.category == "Snacks" }
+                _beverages.value = recipes.filter { it.category == "Beverage" }
+            }
+        }
+    }
 
     fun getRecipe(recipeId: Int) = viewModelScope.launch {
         recipe = repository.getRecipe(recipeId)
@@ -31,10 +71,12 @@ class RecipeViewModel @Inject constructor(
 
     fun upsertRecipe(recipe: Recipe) = viewModelScope.launch {
         repository.upsertRecipe(recipe)
+        loadAllRecipes()
     }
 
     fun deleteRecipe(recipe: Recipe) = viewModelScope.launch {
         repository.deleteRecipe(recipe)
+        loadAllRecipes()
     }
 
 
@@ -69,15 +111,4 @@ class RecipeViewModel @Inject constructor(
     fun toBitmap(byteArray: ByteArray): Bitmap {
         return RecipeTypeConverter().toBitmap(byteArray)
     }
-
-//    fun updateImage(image: Bitmap) {
-//        recipe = recipe.copy(
-//            image = image
-//        )
-//    }
-
-//    fun getBitmapFromDrawable(context: Context, drawableId: Int): Bitmap {
-//        val drawable = ContextCompat.getDrawable(context, drawableId)
-//        return (drawable as BitmapDrawable).bitmap
-//    }
 }

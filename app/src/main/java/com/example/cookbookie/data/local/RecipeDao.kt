@@ -22,5 +22,6 @@ interface RecipeDao {
     @Query("SELECT * FROM recipe WHERE id=:recipeId")
     suspend fun getRecipe(recipeId: Int): Recipe
 
-    // TODO : Other queries based on categories
+    @Query("SELECT * FROM recipe WHERE category=:category")
+    fun getRecipesByCategory(category: String = "All"): Flow<List<Recipe>>
 }

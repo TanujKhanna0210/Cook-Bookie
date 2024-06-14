@@ -7,6 +7,8 @@ interface RecipeRepository {
 
     fun getAllRecipes(): Flow<List<Recipe>>
 
+    fun getRecipesByCategory(category: String): Flow<List<Recipe>>
+
     suspend fun getRecipe(recipeId: Int): Recipe
 
     suspend fun upsertRecipe(recipe: Recipe)
