@@ -35,7 +35,7 @@ fun NavGraph() {
         listOf(
             BottomNavigationItem(icon = Icons.Filled.Home, text = "Home"),
             BottomNavigationItem(icon = Icons.Filled.Add, text = "Add"),
-            BottomNavigationItem(icon = Icons.Filled.Bookmark, text = "Bookmark")
+            BottomNavigationItem(icon = Icons.Filled.Bookmark, text = "Collection")
         )
     }
 
