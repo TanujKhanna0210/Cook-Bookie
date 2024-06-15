@@ -93,13 +93,13 @@ fun RecipeCard(
                             .size(80.dp)
                             .padding(top = 6.dp, bottom = 6.dp, end = 6.dp)
                             .clip(MaterialTheme.shapes.medium),
-                        painter = painterResource(id = R.drawable.placeholder_image),
+                        painter = painterResource(id = R.drawable.placeholder),
                         contentDescription = null,
                         contentScale = ContentScale.Crop
                     )
                 }
 
-                Spacer(modifier = Modifier.width(10.dp))
+                Spacer(modifier = Modifier.width(8.dp))
 
                 Column(
                     verticalArrangement = Arrangement.Center
@@ -111,7 +111,9 @@ fun RecipeCard(
                         fontWeight = FontWeight.Bold,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        fontSize = 18.sp
+                        fontSize = 18.sp,
+                        modifier = Modifier
+                            .padding(end = 24.dp)
                     )
 
                     Spacer(modifier = Modifier.height(6.dp))
@@ -121,7 +123,9 @@ fun RecipeCard(
                         style = MaterialTheme.typography.bodyLarge,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        fontSize = 12.sp
+                        fontSize = 12.sp,
+                        modifier = Modifier
+                            .padding(end = 24.dp)
                     )
 
                     Spacer(modifier = Modifier.height(6.dp))
