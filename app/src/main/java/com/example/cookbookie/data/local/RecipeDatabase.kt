@@ -7,7 +7,7 @@ import com.example.cookbookie.domain.model.Recipe
 
 @Database(
     entities = [Recipe::class],
-    version = 4
+    version = 5
 )
 @TypeConverters(
     RecipeTypeConverter::class

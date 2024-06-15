@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
@@ -30,6 +31,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -57,6 +59,7 @@ fun InsertRecipeComponent(
     var ingredients by remember { mutableStateOf("") }
     var instructions by remember { mutableStateOf("") }
     var imageBitmap by remember { mutableStateOf<Bitmap?>(null) }
+    var rating by remember { mutableIntStateOf(0) }
 
     val context = LocalContext.current
 
@@ -83,7 +86,7 @@ fun InsertRecipeComponent(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.Start
             ) {
-                Row (verticalAlignment = Alignment.CenterVertically) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = "Image:",
                         style = MaterialTheme.typography.bodyMedium,
@@ -206,6 +209,27 @@ fun InsertRecipeComponent(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Text(
+                    text = "Ratings:",
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.width(80.dp)
+                )
+
+                Spacer(modifier = Modifier.width(3.dp))
+
+                RatingBar(modifier = Modifier.size(32.dp), onRatingChange = { r ->
+                    rating = r
+                })
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.Center,
@@ -285,7 +309,8 @@ fun InsertRecipeComponent(
                             category = category,
                             ingredients = ingredients,
                             instructions = instructions,
-                            image = imageByteArray
+                            image = imageByteArray,
+                            rating = rating
                         )
                         viewModel.upsertRecipe(recipe)
                         onBackClick()

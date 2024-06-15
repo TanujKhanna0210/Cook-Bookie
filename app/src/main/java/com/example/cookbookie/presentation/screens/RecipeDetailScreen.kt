@@ -10,12 +10,13 @@ import com.example.cookbookie.presentation.components.UpdateRecipeComponent
 fun RecipeDetailScreen(
     recipeId: Int = -1,
     onBackClick: () -> Unit,
+    navigateToHomeScreen: () -> Unit,
     viewModel: RecipeViewModel = hiltViewModel()
 ) {
 
     if (recipeId != -1) {
 
-        UpdateRecipeComponent(viewModel, recipeId, onBackClick)
+        UpdateRecipeComponent(viewModel, recipeId, onBackClick, navigateToHomeScreen)
 
     } else {
 

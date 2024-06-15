@@ -23,7 +23,7 @@ class RecipeViewModel @Inject constructor(
 ) : ViewModel() {
 
     var recipe by mutableStateOf(
-        Recipe(title = "", category = "", ingredients = "", instructions = "", id = -1)
+        Recipe(title = "", category = "", ingredients = "", instructions = "", rating = 0, id = -1)
     )
         private set
 
@@ -121,6 +121,12 @@ class RecipeViewModel @Inject constructor(
     fun updateInstructions(instructions: String) {
         recipe = recipe.copy(
             instructions = instructions
+        )
+    }
+
+    fun updateRating(rating: Int) {
+        recipe = recipe.copy(
+            rating = rating
         )
     }
 

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
@@ -53,7 +54,8 @@ import com.example.cookbookie.domain.model.Recipe
 fun UpdateRecipeComponent(
     viewModel: RecipeViewModel,
     recipeId: Int,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    navigateToHomeScreen: () -> Unit
 ) {
     LaunchedEffect(key1 = Unit) {
         viewModel.getRecipe(recipeId)
@@ -64,6 +66,8 @@ fun UpdateRecipeComponent(
     val ingredients = viewModel.recipe.ingredients
     val instructions = viewModel.recipe.instructions
     var image by remember { mutableStateOf<Bitmap?>(null) }
+    var rating = viewModel.recipe.rating
+
 
     // Check if the recipe has an image, if yes, update the image state
     if (viewModel.recipe.image != null) {
@@ -230,6 +234,31 @@ fun UpdateRecipeComponent(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Text(
+                    text = "Ratings:",
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.width(80.dp)
+                )
+
+                Spacer(modifier = Modifier.width(3.dp))
+
+                RatingBar(
+                    modifier = Modifier.size(32.dp),
+                    initialRating = rating,
+                    onRatingChange = { r ->
+                        rating = r
+                        viewModel.updateRating(r)
+                    })
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -305,10 +334,11 @@ fun UpdateRecipeComponent(
                             category = category,
                             ingredients = ingredients,
                             instructions = instructions,
-                            image = image?.let { viewModel.fromBitmap(it) }
+                            image = image?.let { viewModel.fromBitmap(it) },
+                            rating = rating
                         )
                         viewModel.upsertRecipe(recipe)
-                        onBackClick()
+                        navigateToHomeScreen()
                     } else {
                         Toast.makeText(
                             context,

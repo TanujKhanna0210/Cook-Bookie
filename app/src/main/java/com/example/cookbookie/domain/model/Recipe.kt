@@ -11,6 +11,7 @@ data class Recipe(
     val instructions: String,
     val image: ByteArray? = null,
     val favorite: Boolean = false,
+    val rating: Int,
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0
 )

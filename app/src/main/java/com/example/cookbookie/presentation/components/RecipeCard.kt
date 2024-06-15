@@ -137,6 +137,18 @@ fun RecipeCard(
                             .padding(end = 24.dp)
                             .alpha(.5f)
                     )
+
+                    if (recipe.rating != 0) {
+                        Spacer(modifier = Modifier.height(6.dp))
+
+                        // Add the RatingBar here
+                        RatingBar(
+                            initialRating = recipe.rating,
+                            onRatingChange = { /* Do nothing here */ },
+                            readOnly = true,
+                            modifier = Modifier.size(16.dp) // Adjust size as needed
+                        )
+                    }
                 }
             }
         }

@@ -120,6 +120,13 @@ fun NavGraph() {
                     recipeId = recipeId,
                     onBackClick = {
                         navController.popBackStack()
+                    },
+                    navigateToHomeScreen = {
+                        navController.navigate(Route.HomeScreen.route) {
+                            popUpTo(Route.HomeScreen.route) {
+                                inclusive = true
+                            }
+                        }
                     }
                 )
             }
