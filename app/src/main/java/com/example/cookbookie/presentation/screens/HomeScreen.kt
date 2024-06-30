@@ -1,5 +1,6 @@
 package com.example.cookbookie.presentation.screens
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Inbox
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -62,7 +65,7 @@ fun HomeScreen(
     val coroutineScope = rememberCoroutineScope()
 
     Surface(
-        color = MaterialTheme.colorScheme.surface,
+//        color = MaterialTheme.colorScheme.surface,
         modifier = modifier.fillMaxSize()
     ) {
         Scaffold { innerPadding ->
@@ -111,24 +114,52 @@ fun HomeScreen(
                     }
                 }
 
-                LazyColumn(
-                    modifier = modifier
-                        .fillMaxSize()
-                        .padding(top = 8.dp),
-                    contentPadding = PaddingValues(2.dp)
-                ) {
-                    val displayedRecipes = if (searchQuery.isEmpty()) recipes else searchResults
-                    items(count = displayedRecipes.size) { index ->
-                        val recipe = displayedRecipes[index]
-                        RecipeCard(
-                            recipe = recipe,
-                            navigateToDetailsScreen = { navigateToDetailsScreen(recipe.id) },
-                            onDelete = { viewModel.deleteRecipe(recipe) },
-                            onFavoriteClick = { viewModel.toggleFavoriteStatus(recipe) },
-                            showDeleteIcon = true
-                        )
+                val displayedRecipes = if (searchQuery.isEmpty()) recipes else searchResults
+
+                if (displayedRecipes.isEmpty()) {
+                    // Placeholder icon or composable
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Inbox,
+                                contentDescription = "No recipes",
+                                modifier = Modifier.size(120.dp),
+                                tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                            )
+                            Text(
+                                text = "No recipes found",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                            )
+                        }
+                    }
+                } else {
+                    LazyColumn(
+                        modifier = modifier
+                            .fillMaxSize()
+                            .padding(top = 8.dp),
+                        contentPadding = PaddingValues(2.dp)
+                    ) {
+
+
+                        items(count = displayedRecipes.size) { index ->
+                            val recipe = displayedRecipes[index]
+                            RecipeCard(
+                                recipe = recipe,
+                                navigateToDetailsScreen = { navigateToDetailsScreen(recipe.id) },
+                                onDelete = { viewModel.deleteRecipe(recipe) },
+                                onFavoriteClick = { viewModel.toggleFavoriteStatus(recipe) },
+                                showDeleteIcon = true
+                            )
+                        }
                     }
                 }
+
             }
         }
     }

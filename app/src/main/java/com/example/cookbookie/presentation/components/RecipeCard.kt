@@ -58,10 +58,10 @@ fun RecipeCard(
                     navigateToDetailsScreen(recipe.id)
                 },
             shape = RoundedCornerShape(10.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.background,
-                contentColor = MaterialTheme.colorScheme.onBackground
-            ),
+//            colors = CardDefaults.cardColors(
+//                containerColor = MaterialTheme.colorScheme.background,
+//                contentColor = MaterialTheme.colorScheme.onBackground
+//            ),
             elevation = CardDefaults.cardElevation(10.dp)
         ) {
             Row(
